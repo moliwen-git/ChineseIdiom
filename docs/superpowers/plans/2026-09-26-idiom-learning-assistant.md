@@ -567,7 +567,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 - Consumes: `tools/raw/b1..b4.json`、`tools/pairings.json`、`tools/new_sentences.json`
 - Produces: `data.js` —— `window.IDIOM_DATA = ` + JSON（spec §3.3 schema：`meta`/`books`/`idioms[{id,book,idiom,meaning,sentences[3]}]`）；`validate_data.py` 退出码 0=PASS、1=FAIL
 
-- [ ] **Step 1: 写 `tools/assemble_data.py`**
+- [x] **Step 1: 写 `tools/assemble_data.py`**
 
 ```python
 #!/usr/bin/env python3
@@ -625,7 +625,7 @@ if __name__ == '__main__':
     main()
 ```
 
-- [ ] **Step 2: 写 `tools/validate_data.py`（spec §8.1 全量校验，保留为交付物）**
+- [x] **Step 2: 写 `tools/validate_data.py`（spec §8.1 全量校验，保留为交付物）**
 
 ```python
 #!/usr/bin/env python3
@@ -683,7 +683,7 @@ if __name__ == '__main__':
     main()
 ```
 
-- [ ] **Step 3: 运行组装 + 校验**
+- [x] **Step 3: 运行组装 + 校验**
 
 ```bash
 cd C:\Users\MX-GMKTEC-X1\MyWork\ChineseIdiom
@@ -692,11 +692,11 @@ PYTHONIOENCODING=utf-8 python tools/validate_data.py
 ```
 Expected: `data.js written: 80 idioms` + `PASS: 80 idioms / 240 sentences，全部校验通过`（WARN 允许存在，逐条人工看过即可）
 
-- [ ] **Step 4: 抽查 data.js 内容**
+- [x] **Step 4: 抽查 data.js 内容**
 
 打开 `data.js` 头尾：首行 `window.IDIOM_DATA = {`、结尾 `};`、`#1 爱屋及乌` 有 3 句（1 original 来自考卷 + 2 new）、`#80 汗牛充栋` 同样齐全。
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add tools/assemble_data.py tools/validate_data.py data.js
