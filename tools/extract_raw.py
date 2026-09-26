@@ -15,6 +15,11 @@ RE_NUM_ONLY = re.compile(r'^(\d+)[.、．]\s*$')            # "1." / "2．"
 RE_NUM_ALONE = re.compile(r'^(\d+)$')                      # "41"（网格格式）
 RE_LEADING_NUM = re.compile(r'^\d')
 
+# 原卷文字勘误表（经主人确认 2026-09-26）：(book, section2 qno) -> (原文, 修正)
+SENTENCE_FIXES = {
+    ('b3', 16): ('这位球队', '这支球队'),   # 原卷量词语病
+}
+
 
 def read_lines(path):
     with open(path, encoding='utf-8') as f:
@@ -144,6 +149,10 @@ def build(bid, name, lo, hi, has_answers):
         if has_answers:
             answer, sentence = extract_answer(sentence, idiom_set)
             sentence = normalize_blanks(sentence)
+        fix = SENTENCE_FIXES.get((bid, qno))
+        if fix:
+            assert fix[0] in sentence, f'{bid} section2 q{qno} 找不到勘误目标: {fix[0]}'
+            sentence = sentence.replace(fix[0], fix[1])
         section2.append({'qno': qno, 'sentence': sentence, 'answer': answer})
 
     assert [e['qno'] for e in section1] == list(range(1, 21)), f'{bid} section1 题号异常'

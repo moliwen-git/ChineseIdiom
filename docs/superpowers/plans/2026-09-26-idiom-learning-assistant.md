@@ -74,7 +74,7 @@ ChineseIdiom/
 }
 ```
 
-- [ ] **Step 1: 写失败测试 `tools/test_extract.py`**
+- [x] **Step 1: 写失败测试 `tools/test_extract.py`**
 
 ```python
 # tools/test_extract.py —— 临时测试台，跑绿后删除
@@ -135,12 +135,12 @@ if __name__ == '__main__':
     unittest.main(verbosity=2)
 ```
 
-- [ ] **Step 2: 跑测试确认全红**
+- [x] **Step 2: 跑测试确认全红**
 
 Run: `cd C:\Users\MX-GMKTEC-X1\MyWork\ChineseIdiom && PYTHONIOENCODING=utf-8 python tools/test_extract.py`
 Expected: ERROR/FAIL（`extract_raw.py` 不存在，subprocess 返回非 0）
 
-- [ ] **Step 3: 实现 `tools/extract_raw.py`**
+- [x] **Step 3: 实现 `tools/extract_raw.py`**
 
 ```python
 #!/usr/bin/env python3
@@ -304,12 +304,12 @@ if __name__ == '__main__':
     main()
 ```
 
-- [ ] **Step 4: 跑测试确认全绿**
+- [x] **Step 4: 跑测试确认全绿**
 
 Run: `cd C:\Users\MX-GMKTEC-X1\MyWork\ChineseIdiom && PYTHONIOENCODING=utf-8 python tools/test_extract.py`
 Expected: 4 个测试全部 OK。若断言失败，打印对应 raw JSON 检查解析分支（常见：61-80 无题号句子、城门失火跨行拼接）。
 
-- [ ] **Step 5: 删除测试台，提交（证据写进 commit 信息）**
+- [x] **Step 5: 删除测试台，提交（证据写进 commit 信息）**
 
 ```bash
 rm tools/test_extract.py
