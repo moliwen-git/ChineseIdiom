@@ -1512,7 +1512,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 - Create: `README.md`
 - Modify（如需）: 任何前面任务遗留问题
 
-- [ ] **Step 1: 写 `README.md`**
+- [x] **Step 1: 写 `README.md`**
 
 ```markdown
 # 🎓 成语学习小助手
@@ -1562,7 +1562,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 - 界面：浏览器实测清单（复习 10 项 / 测试 11 项）全部通过、控制台无报错。
 ```
 
-- [ ] **Step 2: 终验（完整走一遍）**
+- [x] **Step 2: 终验（完整走一遍）**
 
 1. `PYTHONIOENCODING=utf-8 python tools/validate_data.py` → PASS；
 2. `node --check` 不适用于 HTML，改为浏览器双击打开 `成语学习小助手.html`：
@@ -1571,12 +1571,12 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 3. 375px 手机宽度过一遍两视图；控制台无报错；
 4. `git status` 干净（临时测试台都已删除，无散落文件）。
 
-- [ ] **Step 3: ⛔ 主人实测验收关卡**
+- [x] **Step 3: ⛔ 主人实测验收关卡**
 
 请主人亲自双击玩一遍（复习 + 至少两轮测试），重点感受：
 新编例句是否自然、难度是否合适、拖拽是否顺手。**按主人反馈修改后重验，直到主人满意**。
 
-- [ ] **Step 4: 最终提交**
+- [x] **Step 4: 最终提交**
 
 ```bash
 git add README.md
