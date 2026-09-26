@@ -282,7 +282,100 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Ping
 /* LOGIC-END */
 </script>
 <script>
-/* UI 脚本（Task 6/7 填充） */
+(function () {
+  'use strict';
+  var App = window.IdiomApp;
+  var storage = App.makeStorage();
+  var data = window.IDIOM_DATA;
+  function $(s) { return document.querySelector(s); }
+  function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function fail(msg) {
+    var b = $('#error-banner');
+    b.hidden = false; b.textContent = '⚠️ ' + msg;
+    $('#view-review').hidden = true; $('#view-quiz').hidden = true;
+    document.querySelector('.tabs').style.display = 'none';
+  }
+  if (!data) { fail('题库加载失败：请检查 data.js 是否存在且格式正确'); return; }
+  var check = App.validateData(data);
+  if (!check.ok) { fail('题库数据校验未通过：' + check.errors.slice(0, 5).join('；')); return; }
+
+  function bookName(id) {
+    var b = null;
+    data.books.forEach(function (x) { if (x.id === id) b = x; });
+    return b ? b.name : id;
+  }
+
+  // ===== 视图切换 =====
+  var quizStarted = false;
+  function switchView(v) {
+    $$('.tab').forEach(function (b) { b.classList.toggle('active', b.dataset.view === v); });
+    $('#view-review').hidden = v !== 'review';
+    $('#view-quiz').hidden = v !== 'quiz';
+    App.saveSettings(Object.assign(App.loadSettings(storage), { view: v }), storage);
+    if (v === 'quiz' && !quizStarted && typeof startRound === 'function') {
+      quizStarted = true; startRound();
+    }
+  }
+  $$('.tab').forEach(function (btn) {
+    btn.addEventListener('click', function () { switchView(btn.dataset.view); });
+  });
+
+  // ===== 成语复习视图 =====
+  var state = { book: App.loadSettings(storage).book || 'all', q: '' };
+
+  function renderFilters() {
+    var box = $('#book-filter'); box.innerHTML = '';
+    function mk(id, label) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'fbtn' + (state.book === id ? ' active' : '');
+      b.textContent = label;
+      b.addEventListener('click', function () {
+        state.book = id;
+        App.saveSettings(Object.assign(App.loadSettings(storage), { book: id }), storage);
+        renderFilters(); renderCards();
+      });
+      box.appendChild(b);
+    }
+    mk('all', '全部');
+    data.books.forEach(function (bk) { mk(bk.id, bk.name.replace(/^成语练习/, '')); });
+  }
+
+  function renderCards() {
+    var grid = $('#cards'); grid.innerHTML = '';
+    var q = state.q.trim();
+    var list = data.idioms.filter(function (it) {
+      return (state.book === 'all' || it.book === state.book) && (!q || it.idiom.indexOf(q) !== -1);
+    });
+    $('#count').textContent = '共 ' + list.length + ' 个';
+    list.forEach(function (it) {
+      var card = document.createElement('div');
+      card.className = 'flip-card';
+      card.innerHTML =
+        '<div class="flip-inner">' +
+          '<div class="flip-face flip-front"><div><div class="idiom">' + esc(it.idiom) + '</div>' +
+          '<div class="no">#' + it.id + ' · ' + esc(bookName(it.book)) + '</div></div></div>' +
+          '<div class="flip-face flip-back"><p>' + esc(it.meaning) + '</p></div>' +
+        '</div>';
+      card.addEventListener('click', function () { card.classList.toggle('flipped'); });
+      grid.appendChild(card);
+    });
+  }
+
+  $('#search').addEventListener('input', function (e) { state.q = e.target.value; renderCards(); });
+  $('#reset-flip').addEventListener('click', function () {
+    $$('.flip-card.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+  });
+  renderFilters();
+  renderCards();
+  switchView(App.loadSettings(storage).view === 'quiz' ? 'quiz' : 'review');
+})();
 </script>
 </body>
 </html>

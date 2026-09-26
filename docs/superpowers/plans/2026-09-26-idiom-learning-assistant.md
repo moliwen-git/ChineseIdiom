@@ -1181,7 +1181,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 - Consumes: `window.IdiomApp`（Task 5）、`window.IDIOM_DATA`（data.js）
 - Produces: IIFE 内的 `switchView(v)`、`esc(s)`、`state`、`fail(msg)`；Task 7 将在同一 IIFE 内追加 `startRound()` 等函数（`switchView` 用 `typeof startRound === 'function'` 守卫，Task 6 阶段点测试标签为空白属预期）
 
-- [ ] **Step 1: 写入 UI 脚本（替换占位注释）**
+- [x] **Step 1: 写入 UI 脚本（替换占位注释）**
 
 ```html
 <script>
@@ -1272,7 +1272,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 </script>
 ```
 
-- [ ] **Step 2: 浏览器实测（webapp-testing 或手动，file:// 打开）**
+- [x] **Step 2: 浏览器实测（webapp-testing 或手动，file:// 打开）**
 
 Run: 用 webapp-testing（Playwright）打开 `file:///C:/Users/MX-GMKTEC-X1/MyWork/ChineseIdiom/成语学习小助手.html`，或主人浏览器手动双击。
 
@@ -1288,7 +1288,7 @@ Run: 用 webapp-testing（Playwright）打开 `file:///C:/Users/MX-GMKTEC-X1/MyW
 9. **控制台全程无报错**；
 10. 临时把 `data.js` 改名再刷新 → 显示红色横幅「题库加载失败…」，不白屏（验完改回来）。
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add 成语学习小助手.html
