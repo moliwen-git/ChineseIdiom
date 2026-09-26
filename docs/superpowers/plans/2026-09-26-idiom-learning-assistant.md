@@ -734,7 +734,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
   - `updateProgress(progress, round, results, now = Date.now()) → progress`（对→streak+1 且 streak≥2 时 wrongLast=false；错→streak=0、wrongLast=true；asked+1；lastAskedAt=now）
   - `validateData(data) → { ok: boolean, errors: string[] }`
 
-- [ ] **Step 1: 写失败测试 `tools/logic.test.mjs`**
+- [x] **Step 1: 写失败测试 `tools/logic.test.mjs`**
 
 ```js
 // tools/logic.test.mjs —— 临时测试台，跑绿后删除
@@ -858,12 +858,12 @@ test('validateData 检出结构问题', () => {
 });
 ```
 
-- [ ] **Step 2: 跑测试确认全红**
+- [x] **Step 2: 跑测试确认全红**
 
 Run: `cd C:\Users\MX-GMKTEC-X1\MyWork\ChineseIdiom && node --test tools/logic.test.mjs`
 Expected: FAIL（`成语学习小助手.html` 不存在，readFileSync 抛 ENOENT，全部测试红）
 
-- [ ] **Step 3: 创建 `成语学习小助手.html`（骨架 + 全部 CSS + 逻辑标记区）**
+- [x] **Step 3: 创建 `成语学习小助手.html`（骨架 + 全部 CSS + 逻辑标记区）**
 
 ```html
 <!doctype html>
@@ -1144,16 +1144,16 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Ping
 </html>
 ```
 
-- [ ] **Step 4: 跑测试确认全绿**
+- [x] **Step 4: 跑测试确认全绿**
 
 Run: `node --test tools/logic.test.mjs`
 Expected: 10 tests PASS。红则按断言修 `LOGIC` 区代码（只许改标记区内，HTML/CSS 与逻辑无关）。
 
-- [ ] **Step 5: 浏览器冒烟**
+- [x] **Step 5: 浏览器冒烟**
 
 双击打开 `成语学习小助手.html`（或 webapp-testing 打开 `file:///C:/Users/MX-GMKTEC-X1/MyWork/ChineseIdiom/成语学习小助手.html`）：页面不白屏、标题「🎓 成语学习小助手」、两个标签按钮渲染、控制台无报错（视图内容还是空的，Task 6/7 填充）。
 
-- [ ] **Step 6: 删除测试台，提交（证据写进 commit 信息）**
+- [x] **Step 6: 删除测试台，提交（证据写进 commit 信息）**
 
 ```bash
 rm tools/logic.test.mjs

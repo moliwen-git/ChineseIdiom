@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>成语学习小助手</title>
+<style>
+:root{--bg:#f6f8fa;--card:#fff;--ink:#1f2937;--muted:#6b7280;--primary:#2563eb;--primary-soft:#dbeafe;--ok:#16a34a;--ok-soft:#dcfce7;--bad:#dc2626;--bad-soft:#fee2e2;--line:#e5e7eb;--radius:14px;--shadow:0 1px 3px rgba(16,24,40,.08),0 8px 24px rgba(16,24,40,.06)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:16px}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;margin-bottom:16px}
+.top h1{font-size:22px;margin:0}
+.tabs{display:flex;gap:8px}
+.tab{border:1px solid var(--line);background:var(--card);padding:8px 16px;border-radius:999px;cursor:pointer;font-size:15px;color:var(--ink)}
+.tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.banner{background:var(--bad-soft);color:var(--bad);padding:12px 16px;border-radius:var(--radius);margin-bottom:16px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.fbtn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px;color:var(--muted)}
+.fbtn.active{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+#search{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;min-width:160px}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 16px;cursor:pointer;font-size:14px;color:var(--ink)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.primary:disabled{opacity:.5;cursor:not-allowed}
+.btn.ghost{color:var(--muted)}
+.btn.big{font-size:16px;padding:12px 24px}
+.muted{color:var(--muted);font-size:13px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.flip-card{perspective:1000px;height:200px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:18px;border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);text-align:center;overflow:auto}
+.flip-front .idiom{font-size:30px;font-weight:700;letter-spacing:2px}
+.flip-front .no{margin-top:8px;color:var(--muted);font-size:12px}
+.flip-back{transform:rotateY(180deg);align-items:flex-start;justify-content:flex-start;font-size:14px;color:#374151;text-align:left}
+.quiz-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+#sentences{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.sentence{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:baseline}
+.s-no{color:var(--muted);font-size:13px;min-width:24px}
+.slot{display:inline-block;min-width:7em;border-bottom:2px dashed var(--primary);margin:0 2px;padding:0 6px;text-align:center;color:var(--primary);font-weight:600;cursor:pointer;border-radius:6px}
+.slot.filled{background:var(--primary-soft);border-bottom-style:solid}
+.slot.hover{background:var(--primary-soft);outline:2px solid var(--primary)}
+.tray-title{margin:16px 0 8px}
+.tray{display:flex;flex-wrap:wrap;gap:10px;padding:14px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);min-height:60px}
+.chip{border:1px solid var(--primary);background:var(--primary-soft);color:var(--primary);border-radius:10px;padding:8px 14px;font-size:16px;cursor:grab;touch-action:none;user-select:none}
+.chip.selected{background:var(--primary);color:#fff}
+.chip.used,.chip.dragging{opacity:.25}
+.chip.used{pointer-events:none}
+.chip.ghost{position:fixed;z-index:99;pointer-events:none;transform:translate(-50%,-50%);box-shadow:var(--shadow)}
+.score{font-size:20px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px;text-align:center}
+#review{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:10px}
+.review-item{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 16px;border-left:4px solid var(--line)}
+.review-item.ok{border-left-color:var(--ok)}
+.review-item.bad{border-left-color:var(--bad)}
+.ans-ok{color:var(--ok)}
+.ans-bad{color:var(--bad);text-decoration:line-through}
+.r-meaning{margin-top:6px;font-size:13px;color:var(--muted)}
+#panel-result{text-align:center}
+#review{text-align:left}
+#retry{margin:8px auto 24px}
+@media (max-width:600px){.flip-front .idiom{font-size:24px}.chip{font-size:15px;padding:6px 10px}.wrap{padding:12px}.flip-card{height:220px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>🎓 成语学习小助手</h1>
+    <nav class="tabs">
+      <button class="tab active" data-view="review" type="button">📖 成语复习</button>
+      <button class="tab" data-view="quiz" type="button">✏️ 成语测试</button>
+    </nav>
+  </header>
+  <div id="error-banner" class="banner" hidden></div>
+
+  <main id="view-review">
+    <div class="toolbar">
+      <div id="book-filter" class="filters"></div>
+      <input id="search" type="search" placeholder="搜索成语…">
+      <button id="reset-flip" class="btn ghost" type="button">全部翻回正面</button>
+      <span id="count" class="muted"></span>
+    </div>
+    <div id="cards" class="card-grid"></div>
+  </main>
+
+  <main id="view-quiz" hidden>
+    <section id="panel-quiz">
+      <div class="quiz-head">
+        <span id="round-info" class="muted"></span>
+        <button id="submit" class="btn primary" type="button" disabled>上交答案</button>
+      </div>
+      <ol id="sentences"></ol>
+      <div class="tray-title muted">把下面的成语拖进例句的空格里（手机：先点成语，再点空格）：</div>
+      <div id="tray" class="tray"></div>
+    </section>
+    <section id="panel-result" hidden>
+      <div id="score-banner" class="score"></div>
+      <ol id="review"></ol>
+      <button id="retry" class="btn primary big" type="button">🔄 再一次尝试</button>
+    </section>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* LOGIC-START */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.IdiomApp = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+  var PROGRESS_KEY = 'idiom.progress';
+  var SETTINGS_KEY = 'idiom.settings';
+
+  function newProgress() { return { byIdiom: {} }; }
+
+  function entryOf(progress, id) {
+    if (!progress.byIdiom[id]) {
+      progress.byIdiom[id] = { asked: 0, correct: 0, correctStreak: 0, wrongLast: false, lastAskedAt: 0 };
+    }
+    return progress.byIdiom[id];
+  }
+
+  function makeStorage() {
+    try {
+      var s = typeof window !== 'undefined' ? window.localStorage : null;
+      if (!s) throw new Error('no localStorage');
+      s.setItem('__probe__', '1'); s.removeItem('__probe__');
+      return { available: true, backend: s };
+    } catch (e) {
+      var mem = new Map();
+      return {
+        available: false,
+        backend: {
+          getItem: function (k) { return mem.has(k) ? mem.get(k) : null; },
+          setItem: function (k, v) { mem.set(k, String(v)); },
+          removeItem: function (k) { mem.delete(k); }
+        }
+      };
+    }
+  }
+
+  function loadProgress(storage) {
+    try {
+      var raw = storage.backend.getItem(PROGRESS_KEY);
+      if (!raw) return newProgress();
+      var p = JSON.parse(raw);
+      if (!p || typeof p !== 'object' || !p.byIdiom || typeof p.byIdiom !== 'object') return newProgress();
+      var clean = newProgress();
+      Object.keys(p.byIdiom).forEach(function (k) {
+        var v = p.byIdiom[k];
+        if (v && typeof v === 'object' && Number.isFinite(v.asked)) {
+          clean.byIdiom[k] = {
+            asked: v.asked | 0, correct: v.correct | 0, correctStreak: v.correctStreak | 0,
+            wrongLast: !!v.wrongLast, lastAskedAt: Number(v.lastAskedAt) || 0
+          };
+        }
+      });
+      return clean;
+    } catch (e) { return newProgress(); }
+  }
+
+  function saveProgress(progress, storage) {
+    try { storage.backend.setItem(PROGRESS_KEY, JSON.stringify(progress)); return true; }
+    catch (e) { return false; }
+  }
+
+  function loadSettings(storage) {
+    try { return JSON.parse(storage.backend.getItem(SETTINGS_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function saveSettings(settings, storage) {
+    try { storage.backend.setItem(SETTINGS_KEY, JSON.stringify(settings)); return true; } catch (e) { return false; }
+  }
+
+  function shuffle(arr, rng) {
+    if (!rng) rng = Math.random;
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(rng() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function mulberry32(seed) {
+    var t = seed >>> 0;
+    return function () {
+      t += 0x6D2B79F5;
+      var x = Math.imul(t ^ (t >>> 15), 1 | t);
+      x ^= x + Math.imul(x ^ (x >>> 7), 61 | x);
+      return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function pickIdioms(idioms, progress, count, rng) {
+    if (count == null) count = 10;
+    if (!rng) rng = Math.random;
+    var by = (progress && progress.byIdiom) || {};
+    function stat(it) { return by[it.id] || { asked: 0, correctStreak: 0, wrongLast: false, lastAskedAt: 0 }; }
+    var wrong = [], fresh = [], rest = [];
+    idioms.forEach(function (it) {
+      var s = stat(it);
+      if (s.wrongLast && s.correctStreak < 2) wrong.push(it);
+      else if (!s.asked) fresh.push(it);
+      else rest.push(it);
+    });
+    rest.sort(function (a, b) { return stat(a).lastAskedAt - stat(b).lastAskedAt; });
+    var pool = shuffle(wrong, rng).concat(shuffle(fresh, rng), rest);
+    return pool.slice(0, Math.min(count, idioms.length));
+  }
+
+  function buildRound(picked, rng) {
+    if (!rng) rng = Math.random;
+    return picked.map(function (item, slot) {
+      var idx = Math.min(item.sentences.length - 1, Math.floor(rng() * item.sentences.length));
+      return { slot: slot, idiomId: item.id, sentenceIndex: idx, text: item.sentences[idx].text, answer: item.idiom, meaning: item.meaning };
+    });
+  }
+
+  function gradeRound(round, userAnswers) {
+    var results = round.map(function (q) {
+      return {
+        slot: q.slot, idiomId: q.idiomId, text: q.text, meaning: q.meaning,
+        correct: userAnswers[q.slot] === q.answer,
+        userAnswer: userAnswers[q.slot] == null ? null : userAnswers[q.slot],
+        correctAnswer: q.answer
+      };
+    });
+    return { results: results, score: results.filter(function (r) { return r.correct; }).length, total: results.length };
+  }
+
+  function updateProgress(progress, round, results, now) {
+    if (now == null) now = Date.now();
+    results.forEach(function (r) {
+      var e = entryOf(progress, r.idiomId);
+      e.asked += 1;
+      if (r.correct) {
+        e.correct += 1; e.correctStreak += 1;
+        if (e.correctStreak >= 2) e.wrongLast = false;
+      } else {
+        e.correctStreak = 0; e.wrongLast = true;
+      }
+      e.lastAskedAt = now;
+    });
+    return progress;
+  }
+
+  function validateData(data) {
+    var errors = [];
+    if (!data || typeof data !== 'object') return { ok: false, errors: ['题库不是有效对象'] };
+    if (!Array.isArray(data.books) || !data.books.length) errors.push('books 缺失');
+    if (!Array.isArray(data.idioms)) errors.push('idioms 缺失');
+    else {
+      var seen = {};
+      data.idioms.forEach(function (it, i) {
+        var tag = 'idioms[' + i + ']';
+        if (!it || typeof it !== 'object') { errors.push(tag + ' 不是对象'); return; }
+        if (typeof it.id !== 'number' || seen[it.id]) errors.push(tag + ' id 重复或非法');
+        seen[it.id] = true;
+        if (typeof it.idiom !== 'string' || !it.idiom) errors.push(tag + ' 成语缺失');
+        if (typeof it.meaning !== 'string' || !it.meaning) errors.push(tag + ' 释义缺失');
+        if (!Array.isArray(it.sentences) || it.sentences.length !== 3) errors.push(tag + ' 需恰好 3 条例句');
+        else it.sentences.forEach(function (s, j) {
+          if (!s || typeof s.text !== 'string' || s.text.split('____').length !== 2) errors.push(tag + '.sentences[' + j + '] 需含恰好一个____');
+          if (!s || (s.source !== 'original' && s.source !== 'new')) errors.push(tag + '.sentences[' + j + '] source 非法');
+        });
+      });
+    }
+    return { ok: errors.length === 0, errors: errors };
+  }
+
+  return {
+    PROGRESS_KEY: PROGRESS_KEY, SETTINGS_KEY: SETTINGS_KEY,
+    newProgress: newProgress, entryOf: entryOf, makeStorage: makeStorage,
+    loadProgress: loadProgress, saveProgress: saveProgress,
+    loadSettings: loadSettings, saveSettings: saveSettings,
+    shuffle: shuffle, mulberry32: mulberry32,
+    pickIdioms: pickIdioms, buildRound: buildRound,
+    gradeRound: gradeRound, updateProgress: updateProgress, validateData: validateData
+  };
+});
+/* LOGIC-END */
+</script>
+<script>
+/* UI 脚本（Task 6/7 填充） */
+</script>
+</body>
+</html>
