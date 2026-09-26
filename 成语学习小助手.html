@@ -372,6 +372,168 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Ping
   $('#reset-flip').addEventListener('click', function () {
     $$('.flip-card.flipped').forEach(function (c) { c.classList.remove('flipped'); });
   });
+  // ===== 成语测试视图 =====
+  var round = [], placements = [], selectedChip = null, locked = false;
+  var roundNo = App.loadSettings(storage).roundNo || 0;
+  var suppressClick = false;
+  var dragState = null;
+
+  function startRound() {
+    locked = false; selectedChip = null; dragState = null;
+    var progress = App.loadProgress(storage);
+    var picked = App.pickIdioms(data.idioms, progress, 10);
+    round = App.buildRound(picked);
+    placements = round.map(function () { return null; });
+    roundNo += 1;
+    $('#panel-result').hidden = true;
+    $('#panel-quiz').hidden = false;
+    renderQuiz();
+  }
+
+  function renderQuiz() {
+    $('#round-info').textContent = '第 ' + roundNo + ' 轮 · ' + round.length + ' 题';
+    var ol = $('#sentences'); ol.innerHTML = '';
+    round.forEach(function (q) {
+      var parts = q.text.split('____');
+      var li = document.createElement('li');
+      li.className = 'sentence';
+      li.innerHTML = '<span class="s-no">' + (q.slot + 1) + '.</span><span>' + esc(parts[0]) +
+        '<span class="slot" data-slot="' + q.slot + '"></span>' + esc(parts[1]) + '</span>';
+      ol.appendChild(li);
+    });
+    var tray = $('#tray'); tray.innerHTML = '';
+    App.shuffle(round.map(function (q) { return q.answer; })).forEach(function (text) {
+      var chip = document.createElement('button');
+      chip.type = 'button'; chip.className = 'chip';
+      chip.textContent = text; chip.dataset.idiom = text;
+      tray.appendChild(chip);
+    });
+    renderPlacements();
+    bindQuizEvents();
+  }
+
+  function renderPlacements() {
+    $$('.slot').forEach(function (el) {
+      var s = +el.dataset.slot;
+      el.textContent = placements[s] || '';
+      el.classList.toggle('filled', !!placements[s]);
+    });
+    $$('#tray .chip').forEach(function (ch) {
+      var used = placements.indexOf(ch.dataset.idiom) !== -1;
+      ch.classList.toggle('used', used);
+      ch.classList.toggle('selected', !used && selectedChip === ch.dataset.idiom);
+    });
+    var left = placements.filter(function (p) { return !p; }).length;
+    var btn = $('#submit');
+    btn.disabled = left > 0 || locked;
+    btn.textContent = left > 0 ? '上交答案（还差 ' + left + ' 空）' : '上交答案';
+  }
+
+  function place(slot, idiomText) {
+    if (locked || !idiomText) return;
+    var from = placements.indexOf(idiomText);   // 从别的空格挪过来
+    if (from !== -1) placements[from] = null;
+    placements[slot] = idiomText;
+    selectedChip = null;
+    renderPlacements();
+  }
+  function unplace(slot) { if (!locked) { placements[slot] = null; renderPlacements(); } }
+  function toggleSelect(text) {
+    if (!locked) { selectedChip = selectedChip === text ? null : text; renderPlacements(); }
+  }
+
+  function slotUnder(e) {
+    var el = document.elementFromPoint(e.clientX, e.clientY);
+    return el && el.closest ? el.closest('.slot') : null;
+  }
+  function onChipPointerDown(e, chip) {
+    if (locked || chip.classList.contains('used')) return;
+    dragState = { chip: chip, x0: e.clientX, y0: e.clientY, moved: false, ghost: null };
+    chip.setPointerCapture(e.pointerId);
+  }
+  function onChipPointerMove(e) {
+    if (!dragState) return;
+    if (!dragState.moved) {
+      if (Math.hypot(e.clientX - dragState.x0, e.clientY - dragState.y0) <= 8) return;
+      dragState.moved = true;                       // 超过 8px → 进入拖拽
+      var g = dragState.chip.cloneNode(true);
+      g.classList.remove('selected'); g.classList.add('ghost');
+      document.body.appendChild(g);
+      dragState.ghost = g;
+      dragState.chip.classList.add('dragging');
+    }
+    dragState.ghost.style.left = e.clientX + 'px';
+    dragState.ghost.style.top = e.clientY + 'px';
+    var under = slotUnder(e);
+    $$('.slot').forEach(function (s) { s.classList.toggle('hover', s === under); });
+  }
+  function onChipPointerUp(e) {
+    if (!dragState) return;
+    var st = dragState; dragState = null;
+    $$('.slot').forEach(function (s) { s.classList.remove('hover'); });
+    if (st.moved) {
+      suppressClick = true;                          // 拖拽结束不触发点选
+      setTimeout(function () { suppressClick = false; }, 0);
+      if (st.ghost) st.ghost.remove();
+      st.chip.classList.remove('dragging');
+      var slot = slotUnder(e);
+      if (slot) place(+slot.dataset.slot, st.chip.dataset.idiom);
+      else renderPlacements();
+    }
+  }
+
+  function bindQuizEvents() {
+    $$('#tray .chip').forEach(function (chip) {
+      chip.addEventListener('pointerdown', function (e) { onChipPointerDown(e, chip); });
+      chip.addEventListener('pointermove', onChipPointerMove);
+      chip.addEventListener('pointerup', onChipPointerUp);
+      chip.addEventListener('click', function () { if (!suppressClick) toggleSelect(chip.dataset.idiom); });
+    });
+    $$('.slot').forEach(function (slot) {
+      slot.addEventListener('click', function () {
+        if (locked) return;
+        var s = +slot.dataset.slot;
+        if (placements[s]) unplace(s);
+        else if (selectedChip) place(s, selectedChip);
+      });
+    });
+  }
+
+  $('#submit').addEventListener('click', function () {
+    if (locked || placements.some(function (p) { return !p; })) return;
+    locked = true;
+    var graded = App.gradeRound(round, placements);
+    var progress = App.loadProgress(storage);
+    App.updateProgress(progress, round, graded.results);
+    var saved = App.saveProgress(progress, storage);
+    App.saveSettings(Object.assign(App.loadSettings(storage), { roundNo: roundNo }), storage);
+    renderResult(graded, saved);
+  });
+
+  function renderResult(graded, saved) {
+    $('#panel-quiz').hidden = true;
+    $('#panel-result').hidden = false;
+    var results = graded.results, score = graded.score, total = graded.total;
+    var emoji = score === total ? '🏆' : (score >= total * 0.6 ? '👍' : '💪');
+    $('#score-banner').innerHTML = emoji + ' 本轮得分 <b>' + score + ' / ' + total + '</b>' +
+      (saved ? '' : '<div class="muted">提示：本机浏览器存储不可用，练习进度不会被保存</div>');
+    var ol = $('#review'); ol.innerHTML = '';
+    results.forEach(function (r) {
+      var parts = r.text.split('____');
+      var fill = r.correct
+        ? '<b class="ans-ok">' + esc(r.userAnswer) + '</b>'
+        : '<b class="ans-bad">' + esc(r.userAnswer || '（未填）') + '</b> → <b class="ans-ok">' + esc(r.correctAnswer) + '</b>';
+      var li = document.createElement('li');
+      li.className = 'review-item ' + (r.correct ? 'ok' : 'bad');
+      li.innerHTML = '<div>' + (r.correct ? '✅' : '❌') + ' ' + esc(parts[0]) + fill + esc(parts[1]) + '</div>' +
+        (r.correct ? '' : '<div class="r-meaning">【' + esc(r.correctAnswer) + '】' + esc(r.meaning) + '</div>');
+      ol.appendChild(li);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  $('#retry').addEventListener('click', startRound);
+
   renderFilters();
   renderCards();
   switchView(App.loadSettings(storage).view === 'quiz' ? 'quiz' : 'review');

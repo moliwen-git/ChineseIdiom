@@ -1312,7 +1312,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 - Consumes: `IdiomApp.pickIdioms/buildRound/shuffle/gradeRound/updateProgress/loadProgress/saveProgress/loadSettings/saveSettings`（Task 5 签名）、`esc/$/$$/storage/data/locked 前的 state`（Task 6）
 - Produces: `startRound()`（视图首次切入时自动调用）
 
-- [ ] **Step 1: 追加测试视图代码（插在 `switchView(App.loadSettings...)` 行之前）**
+- [x] **Step 1: 追加测试视图代码（插在 `switchView(App.loadSettings...)` 行之前）**
 
 ```js
   // ===== 成语测试视图 =====
@@ -1478,7 +1478,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
   $('#retry').addEventListener('click', startRound);
 ```
 
-- [ ] **Step 2: 浏览器实测清单（webapp-testing 或手动）**
+- [x] **Step 2: 浏览器实测清单（webapp-testing 或手动）**
 
 1. 切到「✏️ 成语测试」→ 自动出第 1 轮：10 句例句（每句 1 个虚线空格）+ 候选区 10 个成语块（顺序与题目不对应）；
 2. 「上交答案」初始置灰，文案「上交答案（还差 10 空）」；每放 1 个数字递减；
@@ -1492,7 +1492,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 10. 手机宽度（375px）：布局不横滚、点选流可用；
 11. **控制台全程无报错**。
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add 成语学习小助手.html
