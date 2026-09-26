@@ -1,0 +1,298 @@
+{
+  "book": {
+    "id": "b4",
+    "name": "成语练习（61-80）",
+    "range": [
+      61,
+      80
+    ],
+    "hasAnswers": false
+  },
+  "idioms": [
+    {
+      "no": 61,
+      "idiom": "改过自新"
+    },
+    {
+      "no": 62,
+      "idiom": "改邪归正"
+    },
+    {
+      "no": 63,
+      "idiom": "高瞻远瞩"
+    },
+    {
+      "no": 64,
+      "idiom": "高枕无忧"
+    },
+    {
+      "no": 65,
+      "idiom": "各有千秋"
+    },
+    {
+      "no": 66,
+      "idiom": "根深蒂固"
+    },
+    {
+      "no": 67,
+      "idiom": "勾心斗角"
+    },
+    {
+      "no": 68,
+      "idiom": "苟且偷安"
+    },
+    {
+      "no": 69,
+      "idiom": "孤陋寡闻"
+    },
+    {
+      "no": 70,
+      "idiom": "沽名钓誉"
+    },
+    {
+      "no": 71,
+      "idiom": "孤掌难鸣"
+    },
+    {
+      "no": 72,
+      "idiom": "孤注一掷"
+    },
+    {
+      "no": 73,
+      "idiom": "寡不敌众"
+    },
+    {
+      "no": 74,
+      "idiom": "管中窥豹"
+    },
+    {
+      "no": 75,
+      "idiom": "光明正大"
+    },
+    {
+      "no": 76,
+      "idiom": "海底捞针"
+    },
+    {
+      "no": 77,
+      "idiom": "海誓山盟"
+    },
+    {
+      "no": 78,
+      "idiom": "害群之马"
+    },
+    {
+      "no": 79,
+      "idiom": "含沙射影"
+    },
+    {
+      "no": 80,
+      "idiom": "汗牛充栋"
+    }
+  ],
+  "section1": [
+    {
+      "qno": 1,
+      "answer": null,
+      "meaning": "比喻基础深厚，不容易动摇。"
+    },
+    {
+      "qno": 2,
+      "answer": null,
+      "meaning": "比喻危害集体的人。"
+    },
+    {
+      "qno": 3,
+      "answer": null,
+      "meaning": "用某种不正当的手段捞取名誉。"
+    },
+    {
+      "qno": 4,
+      "answer": null,
+      "meaning": "光明磊落，言行正派。"
+    },
+    {
+      "qno": 5,
+      "answer": null,
+      "meaning": "只顾眼前的安逸，不顾将来。"
+    },
+    {
+      "qno": 6,
+      "answer": null,
+      "meaning": "比喻势单力薄，办不成事。"
+    },
+    {
+      "qno": 7,
+      "answer": null,
+      "meaning": "比喻暗中攻击或陷害人。"
+    },
+    {
+      "qno": 8,
+      "answer": null,
+      "meaning": "比喻思想麻痹，丧失警惕。"
+    },
+    {
+      "qno": 9,
+      "answer": null,
+      "meaning": "比喻在危急时用尽所有力量作最后一次冒险。"
+    },
+    {
+      "qno": 10,
+      "answer": null,
+      "meaning": "比喻各人有各人的长处，各人有各人的特色。"
+    },
+    {
+      "qno": 11,
+      "answer": null,
+      "meaning": "形容藏书非常多。"
+    },
+    {
+      "qno": 12,
+      "answer": null,
+      "meaning": "站得高，看得远。比喻眼光远大。"
+    },
+    {
+      "qno": 13,
+      "answer": null,
+      "meaning": "形容学识浅陋，见闻不广。"
+    },
+    {
+      "qno": 14,
+      "answer": null,
+      "meaning": "在大海里捞一根针。形容很难找到。"
+    },
+    {
+      "qno": 15,
+      "answer": null,
+      "meaning": "从邪路上回到正路上来，不再做坏事。"
+    },
+    {
+      "qno": 16,
+      "answer": null,
+      "meaning": "指男女相爱时立下的誓言，爱情要像山和海一样永恒不变。"
+    },
+    {
+      "qno": 17,
+      "answer": null,
+      "meaning": "比喻仅仅了解事物的一小部分；也比喻从这一小部分可以推知全体。"
+    },
+    {
+      "qno": 18,
+      "answer": null,
+      "meaning": "改正错误，重新做起。"
+    },
+    {
+      "qno": 19,
+      "answer": null,
+      "meaning": "人少的抵挡不住人多的。"
+    },
+    {
+      "qno": 20,
+      "answer": null,
+      "meaning": "比喻用尽心机，明争暗斗。"
+    }
+  ],
+  "section2": [
+    {
+      "qno": 1,
+      "sentence": "他这种____的做法，太冒险了。",
+      "answer": null
+    },
+    {
+      "qno": 2,
+      "sentence": "在新加坡这样的蕞尔小国，人们必须未雨绸缪，不能____。",
+      "answer": null
+    },
+    {
+      "qno": 3,
+      "sentence": "我军____，只好暂时撤退，等待机会反攻。",
+      "answer": null
+    },
+    {
+      "qno": 4,
+      "sentence": "她因做慈善工作而出名，但有人指责她____。",
+      "answer": null
+    },
+    {
+      "qno": 5,
+      "sentence": "我们做事应该____，不能鬼鬼祟祟。",
+      "answer": null
+    },
+    {
+      "qno": 6,
+      "sentence": "有人表面上对你很好，背地里却____，暗箭伤人。",
+      "answer": null
+    },
+    {
+      "qno": 7,
+      "sentence": "他曾经误入歧途，但是现在已经____。",
+      "answer": null
+    },
+    {
+      "qno": 8,
+      "sentence": "要在茫茫人海中找到他，就像____一样难。",
+      "answer": null
+    },
+    {
+      "qno": 9,
+      "sentence": "公司里的每个人都应努力工作，不得____。",
+      "answer": null
+    },
+    {
+      "qno": 10,
+      "sentence": "刘韵仙校长是____的教育家，她把南洋女中建设成一流的学校。",
+      "answer": null
+    },
+    {
+      "qno": 11,
+      "sentence": "这件事情非常复杂，单凭____，如何能尽得其中真相？",
+      "answer": null
+    },
+    {
+      "qno": 12,
+      "sentence": "这两篇文章都写得很好，描写手法____。",
+      "answer": null
+    },
+    {
+      "qno": 13,
+      "sentence": "他经常打架闹事，使团体名誉受损，真是____。",
+      "answer": null
+    },
+    {
+      "qno": 14,
+      "sentence": "他最喜欢听些演艺圈____的八卦新闻。",
+      "answer": null
+    },
+    {
+      "qno": 15,
+      "sentence": "热恋时的____，常常经不起现实的考验。",
+      "answer": null
+    },
+    {
+      "qno": 16,
+      "sentence": "“读万卷书，行万里路”，就不会____。",
+      "answer": null
+    },
+    {
+      "qno": 17,
+      "sentence": "国家图书馆的藏书____，可说是学者的宝库。",
+      "answer": null
+    },
+    {
+      "qno": 18,
+      "sentence": "这个犯人出狱后，准备____，重新做人。",
+      "answer": null
+    },
+    {
+      "qno": 19,
+      "sentence": "他这种重男轻女的封建思想早已____，很难改变。",
+      "answer": null
+    },
+    {
+      "qno": 20,
+      "sentence": "我一个人____，必须靠大家帮助才能成功。",
+      "answer": null
+    }
+  ],
+  "section1Corrections": []
+}
