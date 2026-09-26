@@ -346,7 +346,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 }
 ```
 
-- [ ] **Step 1: 写失败测试 `tools/test_pairings.py`**
+- [x] **Step 1: 写失败测试 `tools/test_pairings.py`**
 
 ```python
 # tools/test_pairings.py —— 临时测试台，跑绿后删除
@@ -373,12 +373,12 @@ if __name__ == '__main__':
     unittest.main(verbosity=2)
 ```
 
-- [ ] **Step 2: 跑测试确认全红**
+- [x] **Step 2: 跑测试确认全红**
 
 Run: `PYTHONIOENCODING=utf-8 python tools/test_pairings.py`
 Expected: FAIL（`tools/pairings.json` 不存在，FileNotFoundError）
 
-- [ ] **Step 3: 逐条语义配对，写出 `tools/pairings.json`**
+- [x] **Step 3: 逐条语义配对，写出 `tools/pairings.json`**
 
 做法：读 `tools/raw/b3.json`（61-80 同理读 b4），对 section1 的每条释义、section2 的每条例句，从该册 `idioms` 的 20 个成语中选出唯一语义匹配项。示例（b4）：
 - 释义「比喻基础深厚，不容易动摇。」→ `根深蒂固`
@@ -387,7 +387,7 @@ Expected: FAIL（`tools/pairings.json` 不存在，FileNotFoundError）
 
 要求：每个成语在 section1、section2 中各恰好用一次（测试保证）；拿不准的先放最可能的，并在审查文档里标 ⚠️ 请主人重点看。
 
-- [ ] **Step 4: 写 `docs/idiom-pairing-review.md` 审查清单**
+- [x] **Step 4: 写 `docs/idiom-pairing-review.md` 审查清单**
 
 格式（b3、b4 各两张表）：
 
@@ -409,16 +409,16 @@ Expected: FAIL（`tools/pairings.json` 不存在，FileNotFoundError）
 …
 ```
 
-- [ ] **Step 5: 跑测试确认全绿**
+- [x] **Step 5: 跑测试确认全绿**
 
 Run: `PYTHONIOENCODING=utf-8 python tools/test_pairings.py`
 Expected: PASS（4 组均为完整一一配对）
 
-- [ ] **Step 6: ⛔ 主人抽查关卡**
+- [x] **Step 6: ⛔ 主人抽查关卡**
 
 把 `docs/idiom-pairing-review.md` 交给主人抽查（提醒可用 `cc :md` 阅读）。**等主人确认配对无误（或按主人指正修改后重跑 Step 5）才能继续**。
 
-- [ ] **Step 7: 删除测试台，提交**
+- [x] **Step 7: 删除测试台，提交**
 
 ```bash
 rm tools/test_pairings.py
@@ -458,7 +458,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 - 用词符合中一学生水平（不用生僻字词、不用网络流行语）；
 - 标点用全角（，。！？），`____` 前后不加空格。
 
-- [ ] **Step 1: 写失败测试 `tools/test_sentences.py`**
+- [x] **Step 1: 写失败测试 `tools/test_sentences.py`**
 
 ```python
 # tools/test_sentences.py —— 临时测试台，跑绿后删除
@@ -511,12 +511,12 @@ if __name__ == '__main__':
 
 注意：`test_no_duplicates` 里原卷例句只有 b1/b2 有答案（b3/b4 配对在 Task 2 完成后才有 `pairings.json`）。本测试台只对照 b1/b2 的原句做防重，b3/b4 的原句防重由 Task 4 的 `validate_data.py` 兜底（组装后全量对照）。
 
-- [ ] **Step 2: 跑测试确认全红**
+- [x] **Step 2: 跑测试确认全红**
 
 Run: `PYTHONIOENCODING=utf-8 python tools/test_sentences.py`
 Expected: FAIL（`tools/new_sentences.json` 不存在）
 
-- [ ] **Step 3: 分 4 批创作 160 句，写入 `tools/new_sentences.json`**
+- [x] **Step 3: 分 4 批创作 160 句，写入 `tools/new_sentences.json`**
 
 每批流程：读该册 `tools/raw/bN.json` 的 20 个成语 + 原卷例句 → 按「内容要求」写 40 句 → 追加进 JSON。示例（id=1 爱屋及乌，原卷句是「男朋友是足球队员」场景，新句须避开恋爱/足球场景）：
 
@@ -529,16 +529,16 @@ Expected: FAIL（`tools/new_sentences.json` 不存在）
 
 （第一句答案是爱屋及乌？——注意：这是**反例**，「因为____」语义不通。执行时写成：「弟弟本来不喜欢下棋，但____，因为爷爷爱下棋，他也常陪爷爷到楼下棋社。」创作时以「语境唯一锁定」为准，此处仅示意格式。）
 
-- [ ] **Step 4: 跑测试确认全绿**
+- [x] **Step 4: 跑测试确认全绿**
 
 Run: `PYTHONIOENCODING=utf-8 python tools/test_sentences.py`
 Expected: 3 个测试全部 OK
 
-- [ ] **Step 5: ⛔ 主人抽读关卡**
+- [x] **Step 5: ⛔ 主人抽读关卡**
 
 从 160 句中随机抽 20 句 + 每册各 2 个成语的完整 3 句对照，贴给主人抽读，确认水平与场景贴合。**等主人认可（或按主人意见修改后重跑 Step 4）才能继续**。
 
-- [ ] **Step 6: 删除测试台，提交**
+- [x] **Step 6: 删除测试台，提交**
 
 ```bash
 rm tools/test_sentences.py
