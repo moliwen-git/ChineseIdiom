@@ -6,7 +6,10 @@
 ## 当前状态（2026-09-26）
 
 - ✅ 项目已交付，**主人实测验收通过**（含验收期 3 处布局微调）
-- git：`main` 分支，工作区干净
+- ✅ **已上线 GitHub Pages**：https://moliwen-git.github.io/ChineseIdiom/
+  （仓库 `moliwen-git/ChineseIdiom` 公开；根目录 `qrcode.png` 为学生扫码入口；
+  `index.html` 是跳转牌；`.nojekyll` 跳过 Jekyll——纯静态站必加，否则构建 errored）
+- git：`main` 分支，工作区干净，远程 origin 已配置（改题库后 `git push` 学生端即更新）
 - 交付物：
   - `成语学习小助手.html` —— 单文件双视图（📖 翻转卡片复习 / ✏️ 考卷版式拖拽测试）
   - `data.js` —— 题库：80 成语 × 3 例句 = 240 句；**以后加成语/改例句只改这个文件**
